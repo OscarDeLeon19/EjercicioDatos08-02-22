@@ -14,44 +14,61 @@ public class Main {
         System.out.println("Ingrega la cantidad de datos:");
         int cantidadDatos = entrada.nextInt();
         int[] arreglo = new int[cantidadDatos];
-        ordenarDatos(cantidadDatos, arreglo);
+        ingresarDatos(cantidadDatos, arreglo);
 
     }
 
-    public static void ordenarDatos(int cantidadDatos, int[] arreglo) {
+    /**
+     * Metodo para Ingresar los datos de el arreglo
+     *
+     * @param cantidadDatos
+     * @param arreglo
+     */
+    public static void ingresarDatos(int cantidadDatos, int[] arreglo) {
         Scanner entrada = new Scanner(System.in);
         Random random = new Random();
         for (int i = 0; i < cantidadDatos; i++) {
             arreglo[i] = random.nextInt((cantidadDatos * 10) - 1) + 1;
         }
-        Arrays.sort(arreglo);
+        Arrays.sort(arreglo); // Organiza los numeros de forma ascendente
         for (int i = 0; i < cantidadDatos; i++) {
-            System.out.print(arreglo[i] + ", ");
+            if (i == cantidadDatos - 1) {
+                System.out.print(arreglo[i]);
+            } else {
+                System.out.print(arreglo[i] + ", ");
+            }
         }
         System.out.println("");
         System.out.println("Ingresa el numero para buscar:");
         int numeroBusqueda = entrada.nextInt();
         int pasos = 0;
-        int cantidad = busquedaBinaria(arreglo, numeroBusqueda, pasos);
+        int cantidad = realizarBusquedaBinaria(arreglo, numeroBusqueda, pasos);
         System.out.println("Pasos: " + cantidad);
     }
-
-    public static int busquedaBinaria(int[] arreglo, int numeroBusqueda, int pasos) {
-        pasos++;
-        int tamaño = arreglo.length;
-        int mitad = tamaño / 2;
-        if (tamaño == 1) {
+    /**
+     * Realiza la busqueda binaria. Utiliza recursividad para encontrar el dato, y cada 
+     * vez que el metodo sea llamado, significa que aumento un paso.
+     * @param arreglo El arreglo donde se encuentran los datos
+     * @param numeroBusqueda El numero que se buscará
+     * @param cantidadPasos La cantidad de pasos
+     * @return La cantidad de pasos
+     */
+    public static int realizarBusquedaBinaria(int[] arreglo, int numeroBusqueda, int cantidadPasos) {
+        cantidadPasos++;
+        int tamañoArreglo = arreglo.length;
+        int mitad = tamañoArreglo / 2;
+        if (tamañoArreglo == 1) {
             System.out.println("El dato no esta");
-            return pasos;
+            return cantidadPasos;
         } else {
             if (arreglo[mitad] == numeroBusqueda) {
                 System.out.println("Busqueda Correcta");
-                return pasos;
+                return cantidadPasos;
             } else {
                 if (arreglo[mitad] >= numeroBusqueda) {
-                    return busquedaBinaria(Arrays.copyOfRange(arreglo, 0, mitad), numeroBusqueda, pasos);
+                    return realizarBusquedaBinaria(Arrays.copyOfRange(arreglo, 0, mitad), numeroBusqueda, cantidadPasos);
                 } else {
-                    return busquedaBinaria(Arrays.copyOfRange(arreglo, mitad + 1, tamaño), numeroBusqueda, pasos);
+                    return realizarBusquedaBinaria(Arrays.copyOfRange(arreglo, mitad + 1, tamañoArreglo), numeroBusqueda, cantidadPasos);
                 }
             }
 
